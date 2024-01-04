@@ -7,6 +7,7 @@ import { RLP } from '@ethereumjs/rlp'
 import {
   Address,
   bytesToHex,
+  concatBytes,
   hexToBytes,
   initKZG,
   parseGethGenesisState,
@@ -382,6 +383,11 @@ const args: ClientOpts = yargs(hideBin(process.argv))
     describe: 'path to a file of RLP encoded blocks',
     string: true,
   })
+  .option('dumpBlocksRlp', {
+    describe:
+      'dump blocks to RLP encoded blocks (blocks.rlp). Only works with --executeBlocks. The executed blocks are RLP-dumped.',
+    boolean: true,
+  })
   .option('pruneEngineCache', {
     describe: 'Enable/Disable pruning engine block cache (disable for testing against hive etc)',
     boolean: true,
@@ -478,6 +484,14 @@ async function executeBlocks(client: EthereumClient) {
   }
   const { execution } = client.services.find((s) => s.name === 'eth') as FullEthereumService
   if (execution === undefined) throw new Error('executeBlocks requires execution')
+  if (args.dumpBlocksRlp === true) {
+    let blockRLP = new Uint8Array()
+    for (let i = first; i <= last; i++) {
+      const block = await client.chain.getBlock(BigInt(i))
+      blockRLP = concatBytes(blockRLP, RLP.encode(block.raw()))
+    }
+    writeFileSync('blocks.rlp', blockRLP)
+  }
   await execution.executeBlocks(first, last, txHashes)
 }
 
@@ -549,6 +563,7 @@ async function startClient(
           common: config.chainCommon,
           setHardfork: true,
         })
+        console.log('WRITE', block.header.number)
         blocks.push(block)
         buf = RLP.decode(buf.remainder, true)
         config.logger.info(
@@ -594,7 +609,11 @@ async function startClient(
     await client.start()
   }
 
-  if (args.loadBlocksFromRlp !== undefined && client.chain.opened) {
+  if (
+    args.loadBlocksFromRlp !== undefined &&
+    client.chain.opened &&
+    args.executeBlocks === undefined
+  ) {
     const service = client.service('eth') as FullEthereumService
     await service.execution.open()
     await service.execution.run()

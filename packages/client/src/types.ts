@@ -162,6 +162,7 @@ export interface ClientOpts {
   vmProfileBlocks?: boolean
   vmProfileTxs?: boolean
   loadBlocksFromRlp?: string
+  dumpBlocksRlp?: boolean
   pruneEngineCache?: boolean
   verkleGenesisStateRoot?: Uint8Array
   statelessVerkle?: boolean
