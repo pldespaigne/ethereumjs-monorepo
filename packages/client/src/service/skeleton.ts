@@ -1181,7 +1181,7 @@ export class Skeleton extends MetaDBManager {
           `Resetting canonicalHead for fillCanonicalChain from=${canonicalHead} to=${newHead}`
         )
         canonicalHead = newHead
-        await this.chain.resetCanonicalHead(canonicalHead)
+        //await this.chain.resetCanonicalHead(canonicalHead)
       }
       // update in lock so as to not conflict/overwrite sethead/putblock updates
       await this.runWithLock<void>(async () => {
