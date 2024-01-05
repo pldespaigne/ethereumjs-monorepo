@@ -70,10 +70,10 @@
     }
   },
   "devDependencies": {
-    "@types/minimist": "^1.2.0",
     "@types/node-dir": "^0.0.34",
-    "minimist": "^1.2.0",
-    "node-dir": "^0.1.16"
+    "@types/yargs": "^17.0.24",
+    "node-dir": "^0.1.16",
+    "yargs": "^17.7.1"
   },
   "engines": {
     "node": ">=18"

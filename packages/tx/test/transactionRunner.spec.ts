@@ -1,7 +1,7 @@
 import { Common } from '@ethereumjs/common'
 import { bytesToHex, toBytes } from '@ethereumjs/util'
-import minimist from 'minimist'
 import { assert, describe, it } from 'vitest'
+import yargs from 'yargs'
 
 import { TransactionFactory } from '../src/index.js'
 
@@ -9,7 +9,7 @@ import { getTests } from './testLoader.js'
 
 import type { ForkName, ForkNamesMap, OfficialTransactionTestData } from './types.js'
 
-const argv = minimist(process.argv.slice(2))
+const argv = yargs(process.argv.slice(2)) as any
 const file: string | undefined = argv.file
 
 const forkNames: ForkName[] = [

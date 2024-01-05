@@ -78,15 +78,15 @@
     "@ethersproject/abi": "^5.0.12",
     "@types/benchmark": "^1.0.33",
     "@types/core-js": "^2.5.0",
-    "@types/minimist": "^1.2.2",
     "@types/node-dir": "^0.0.34",
+    "@types/yargs": "^17.0.24",
     "benchmark": "^2.1.4",
     "c-kzg": "^2.1.2",
-    "minimist": "^1.2.5",
     "node-dir": "^0.1.17",
     "nyc": "^15.1.0",
     "solc": "^0.8.1",
-    "tape": "^5.3.1"
+    "tape": "^5.3.1",
+    "yargs": "^17.7.1"
   },
   "engines": {
     "node": ">=18"

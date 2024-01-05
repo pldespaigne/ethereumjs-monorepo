@@ -1,7 +1,7 @@
-import * as minimist from 'minimist'
 import * as path from 'path'
 import * as process from 'process'
 import * as tape from 'tape'
+import yargs from 'yargs'
 
 import {
   DEFAULT_FORK_CONFIG,
@@ -45,8 +45,7 @@ import type { Common } from '@ethereumjs/common'
  * --profile                              If this flag is passed, the state/blockchain tests will profile
  */
 
-//@ts-expect-error Typescript thinks there isn't a default export on minimist but there is
-const argv = minimist.default(process.argv.slice(2))
+const argv = yargs(process.argv.slice(2)).argv as any
 
 async function runTests() {
   let name: 'GeneralStateTests' | 'BlockchainTests'
