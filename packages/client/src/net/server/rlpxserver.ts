@@ -15,7 +15,7 @@ export interface RlpxServerOptions extends ServerOptions {
   clientFilter?: string[]
 }
 
-const ignoredErrors = new RegExp(
+export const ignoredErrors = new RegExp(
   [
     // Peer socket connection
     'ECONNRESET',
