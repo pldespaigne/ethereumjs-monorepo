@@ -9,10 +9,9 @@ import {
   bytesToHex,
   commitmentsToVersionedHashes,
   getBlobs,
-  initKZG,
   randomBytes,
 } from '@ethereumjs/util'
-import * as kzg from 'c-kzg'
+import { loadKZG } from 'kzg-wasm'
 import { assert, describe, it } from 'vitest'
 
 import pow from '../../testdata/geth-genesis/pow.json'
@@ -87,22 +86,25 @@ describe(method, () => {
     if (isBrowser() === true) {
       assert.ok(true)
     } else {
-      try {
-        // Verified KZG is loaded correctly -- NOOP if throws
-        initKZG(kzg, __dirname + '/../../../src/trustedSetups/devnet6.txt')
-        //eslint-disable-next-line
-      } catch {}
       const gethGenesis = require('../../../../block/test/testdata/4844-hardfork.json')
+
+      const kzg = await loadKZG()
+
       const common = Common.fromGethGenesis(gethGenesis, {
         chain: 'customChain',
         hardfork: Hardfork.Cancun,
+        customCrypto: {
+          kzg,
+        },
       })
-      const { chain, execution, server } = await setupChain(gethGenesis, 'customChain')
+      const { chain, execution, server } = await setupChain(gethGenesis, 'customChain', {
+        customCrypto: { kzg },
+      })
       common.setHardfork(Hardfork.Cancun)
       const rpc = getRpcClient(server)
 
       const blobs = getBlobs('hello world')
-      const commitments = blobsToCommitments(blobs)
+      const commitments = blobsToCommitments(kzg, blobs)
       const blobVersionedHashes = commitmentsToVersionedHashes(commitments)
       const proofs = blobs.map((blob, ctx) => kzg.computeBlobKzgProof(blob, commitments[ctx]))
       const tx = BlobEIP4844Transaction.fromTxData(

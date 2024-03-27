@@ -1,5 +1,4 @@
 import { ConsensusAlgorithm } from '@ethereumjs/common'
-import { StatelessVerkleStateManager } from '@ethereumjs/statemanager'
 import {
   Account,
   BIGINT_0,
@@ -14,6 +13,7 @@ import debugDefault from 'debug'
 
 import { EOF } from './eof.js'
 import { ERROR, EvmError } from './exceptions.js'
+import { type EVMPerformanceLogger, type Timer } from './logger.js'
 import { Memory } from './memory.js'
 import { Message } from './message.js'
 import { trap } from './opcodes/index.js'
@@ -21,11 +21,10 @@ import { Stack } from './stack.js'
 
 import type { EVM } from './evm.js'
 import type { Journal } from './journal.js'
-import type { EVMPerformanceLogger, Timer } from './logger.js'
 import type { AsyncOpHandler, Opcode, OpcodeMapEntry } from './opcodes/index.js'
 import type { Block, Blockchain, EVMProfilerOpts, EVMResult, Log } from './types.js'
 import type { Common, EVMStateManagerInterface } from '@ethereumjs/common'
-import type { AccessWitness } from '@ethereumjs/statemanager'
+import type { AccessWitness, StatelessVerkleStateManager } from '@ethereumjs/statemanager'
 import type { Address } from '@ethereumjs/util'
 const { debug: createDebugLogger } = debugDefault
 
@@ -236,6 +235,14 @@ export class Interpreter {
     let err
     let cachedOpcodes: OpcodeMapEntry[]
     let doJumpAnalysis = true
+
+    let timer: Timer | undefined
+    let overheadTimer: Timer | undefined
+    if (this.profilerOpts?.enabled === true && this.performanceLogger.hasTimer()) {
+      timer = this.performanceLogger.pauseTimer()
+      overheadTimer = this.performanceLogger.startTimer('Overhead')
+    }
+
     // Iterate through the given ops until something breaks or we hit STOP
     while (this._runState.programCounter < this._runState.code.length) {
       const programCounter = this._runState.programCounter
@@ -262,7 +269,8 @@ export class Interpreter {
       if (
         opCode === 0xfe &&
         this.common.isActivatedEIP(6800) &&
-        this._runState.stateManager instanceof StatelessVerkleStateManager
+        // is this a code loaded from state using witnesses
+        this._runState.env.chargeCodeAccesses === true
       ) {
         const contract = this._runState.interpreter.getAddress()
         if (
@@ -278,8 +286,17 @@ export class Interpreter {
       this._runState.opCode = opCode!
 
       try {
+        if (overheadTimer !== undefined) {
+          this.performanceLogger.pauseTimer()
+        }
         await this.runStep(opCodeObj!)
+        if (overheadTimer !== undefined) {
+          this.performanceLogger.unpauseTimer(overheadTimer)
+        }
       } catch (e: any) {
+        if (overheadTimer !== undefined) {
+          this.performanceLogger.unpauseTimer(overheadTimer)
+        }
         // re-throw on non-VM errors
         if (!('errorType' in e && e.errorType === 'EvmError')) {
           throw e
@@ -290,6 +307,11 @@ export class Interpreter {
         }
         break
       }
+    }
+
+    if (timer !== undefined) {
+      this.performanceLogger.stopTimer(overheadTimer!, 0)
+      this.performanceLogger.unpauseTimer(timer)
     }
 
     return {
@@ -959,14 +981,7 @@ export class Interpreter {
       return BIGINT_0
     }
 
-    let timer: Timer
-    if (this.profilerOpts?.enabled === true) {
-      timer = this.performanceLogger.pauseTimer()
-    }
     const results = await this._evm.runCall({ message: msg })
-    if (this.profilerOpts?.enabled === true) {
-      this.performanceLogger.unpauseTimer(timer!)
-    }
 
     if (results.execResult.logs) {
       this._result.logs = this._result.logs.concat(results.execResult.logs)
@@ -1057,6 +1072,7 @@ export class Interpreter {
       selfdestruct,
       gasRefund: this._runState.gasRefund,
       blobVersionedHashes: this._env.blobVersionedHashes,
+      accessWitness: this._env.accessWitness,
     })
 
     let createdAddresses: Set<string>
@@ -1065,14 +1081,7 @@ export class Interpreter {
       message.createdAddresses = createdAddresses
     }
 
-    let timer: Timer
-    if (this.profilerOpts?.enabled === true) {
-      timer = this.performanceLogger.pauseTimer()
-    }
     const results = await this._evm.runCall({ message })
-    if (this.profilerOpts?.enabled === true) {
-      this.performanceLogger.unpauseTimer(timer!)
-    }
 
     if (results.execResult.logs) {
       this._result.logs = this._result.logs.concat(results.execResult.logs)

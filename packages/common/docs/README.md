@@ -24,6 +24,7 @@
 - [ChainsConfig](interfaces/ChainsConfig.md)
 - [CommonOpts](interfaces/CommonOpts.md)
 - [CustomCommonOpts](interfaces/CustomCommonOpts.md)
+- [CustomCrypto](interfaces/CustomCrypto.md)
 - [EVMStateManagerInterface](interfaces/EVMStateManagerInterface.md)
 - [GenesisBlockConfig](interfaces/GenesisBlockConfig.md)
 - [GethConfigOpts](interfaces/GethConfigOpts.md)
@@ -46,6 +47,7 @@
 - [EIPOrHFConfig](README.md#eiporhfconfig)
 - [EthashConfig](README.md#ethashconfig)
 - [HardforkConfig](README.md#hardforkconfig)
+- [HardforksDict](README.md#hardforksdict)
 - [Proof](README.md#proof)
 - [StorageProof](README.md#storageproof)
 
@@ -149,7 +151,7 @@ ___
 
 #### Defined in
 
-[types.ts:157](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L157)
+[types.ts:188](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L188)
 
 ___
 
@@ -172,7 +174,7 @@ ___
 
 #### Defined in
 
-[types.ts:136](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L136)
+[types.ts:167](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L167)
 
 ___
 
@@ -192,7 +194,21 @@ ___
 
 #### Defined in
 
-[types.ts:162](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L162)
+[types.ts:193](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L193)
+
+___
+
+### HardforksDict
+
+Ƭ **HardforksDict**: `Object`
+
+#### Index signature
+
+▪ [key: `string`]: [`HardforkConfig`](README.md#hardforkconfig)
+
+#### Defined in
+
+[types.ts:199](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/types.ts#L199)
 
 ___
 
@@ -244,7 +260,7 @@ GenesisState info about well known ethereum chains
 
 #### Defined in
 
-[enums.ts:25](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/enums.ts#L25)
+[enums.ts:26](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/enums.ts#L26)
 
 ## Functions
 
@@ -290,4 +306,4 @@ parsed params
 
 #### Defined in
 
-[utils.ts:205](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/utils.ts#L205)
+[utils.ts:209](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/common/src/utils.ts#L209)

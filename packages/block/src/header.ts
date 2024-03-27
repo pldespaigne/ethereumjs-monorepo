@@ -15,6 +15,7 @@ import {
   bigIntToUnpaddedBytes,
   bytesToBigInt,
   bytesToHex,
+  bytesToUtf8,
   concatBytes,
   ecrecover,
   ecsign,
@@ -353,7 +354,9 @@ export class BlockHeader {
 
     // check if the block used too much gas
     if (this.gasUsed > this.gasLimit) {
-      const msg = this._errorMsg('Invalid block: too much gas used')
+      const msg = this._errorMsg(
+        `Invalid block: too much gas used. Used: ${this.gasUsed}, gas limit: ${this.gasLimit}`
+      )
       throw new Error(msg)
     }
 
@@ -519,17 +522,26 @@ export class BlockHeader {
     const minGasLimit = parentGasLimit - a
 
     if (gasLimit >= maxGasLimit) {
-      const msg = this._errorMsg('gas limit increased too much')
+      const msg = this._errorMsg(
+        `gas limit increased too much. Gas limit: ${gasLimit}, max gas limit: ${maxGasLimit}`
+      )
       throw new Error(msg)
     }
 
     if (gasLimit <= minGasLimit) {
-      const msg = this._errorMsg('gas limit decreased too much')
+      const msg = this._errorMsg(
+        `gas limit decreased too much. Gas limit: ${gasLimit}, min gas limit: ${minGasLimit}`
+      )
       throw new Error(msg)
     }
 
     if (gasLimit < this.common.param('gasConfig', 'minGasLimit')) {
-      const msg = this._errorMsg(`gas limit decreased below minimum gas limit`)
+      const msg = this._errorMsg(
+        `gas limit decreased below minimum gas limit. Gas limit: ${gasLimit}, minimum gas limit: ${this.common.param(
+          'gasConfig',
+          'minGasLimit'
+        )}`
+      )
       throw new Error(msg)
     }
   }
@@ -585,9 +597,17 @@ export class BlockHeader {
     if (this.excessBlobGas === undefined) {
       throw new Error('header must have excessBlobGas field populated')
     }
+    return this._getBlobGasPrice(this.excessBlobGas)
+  }
+
+  /**
+   * Returns the blob gas price depending upon the `excessBlobGas` value
+   * @param excessBlobGas
+   */
+  private _getBlobGasPrice(excessBlobGas: bigint) {
     return fakeExponential(
       this.common.param('gasPrices', 'minBlobGasPrice'),
-      this.excessBlobGas,
+      excessBlobGas,
       this.common.param('gasConfig', 'blobGasPriceUpdateFraction')
     )
   }
@@ -619,6 +639,14 @@ export class BlockHeader {
     } else {
       return targetGasConsumed - targetBlobGasPerBlock
     }
+  }
+
+  /**
+   * Calculate the blob gas price of the block built on top of this one
+   * @returns The blob gas price
+   */
+  public calcNextBlobGasPrice(): bigint {
+    return this._getBlobGasPrice(this.calcNextExcessBlobGas())
   }
 
   /**
@@ -951,7 +979,11 @@ export class BlockHeader {
     const DAO_ForceExtraDataRange = BigInt(9)
     const drift = this.number - DAOActivationBlock
     if (drift <= DAO_ForceExtraDataRange && !equalsBytes(this.extraData, DAO_ExtraData)) {
-      const msg = this._errorMsg("extraData should be 'dao-hard-fork'")
+      const msg = this._errorMsg(
+        `extraData should be 'dao-hard-fork', got ${bytesToUtf8(this.extraData)} (hex: ${bytesToHex(
+          this.extraData
+        )})`
+      )
       throw new Error(msg)
     }
   }

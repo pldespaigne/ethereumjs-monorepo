@@ -13,10 +13,9 @@ import {
   commitmentsToVersionedHashes,
   getBlobs,
   hexToBytes,
-  initKZG,
   randomBytes,
 } from '@ethereumjs/util'
-import * as kzg from 'c-kzg'
+import { loadKZG } from 'kzg-wasm'
 import { assert, describe, it } from 'vitest'
 
 import { INTERNAL_ERROR, INVALID_PARAMS, PARSE_ERROR } from '../../../src/rpc/error-code.js'
@@ -218,14 +217,14 @@ describe(method, () => {
     // Disable block header consensus format validation
     const consensusFormatValidation = BlockHeader.prototype['_consensusFormatValidation']
     BlockHeader.prototype['_consensusFormatValidation'] = (): any => {}
-    try {
-      initKZG(kzg, __dirname + '/../../../src/trustedSetups/devnet6.txt')
-      // eslint-disable-next-line
-    } catch {}
     const gethGenesis = require('../../../../block/test/testdata/4844-hardfork.json')
+
+    const kzg = await loadKZG()
+
     const common = Common.fromGethGenesis(gethGenesis, {
       chain: 'customChain',
       hardfork: Hardfork.Cancun,
+      customCrypto: { kzg },
     })
     common.setHardfork(Hardfork.Cancun)
     const { rpc, client } = await baseSetup({
@@ -234,7 +233,7 @@ describe(method, () => {
       syncTargetHeight: 100n,
     })
     const blobs = getBlobs('hello world')
-    const commitments = blobsToCommitments(blobs)
+    const commitments = blobsToCommitments(kzg, blobs)
     const blobVersionedHashes = commitmentsToVersionedHashes(commitments)
     const proofs = blobs.map((blob, ctx) => kzg.computeBlobKzgProof(blob, commitments[ctx]))
     const pk = randomBytes(32)

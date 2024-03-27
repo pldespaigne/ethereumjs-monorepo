@@ -10,11 +10,10 @@ import {
   bytesToUtf8,
   commitmentsToVersionedHashes,
   getBlobs,
-  initKZG,
   randomBytes,
 } from '@ethereumjs/util'
-import * as kzg from 'c-kzg'
 import * as fs from 'fs/promises'
+import { loadKZG } from 'kzg-wasm'
 import { Level } from 'level'
 import { execSync, spawn } from 'node:child_process'
 import * as net from 'node:net'
@@ -30,6 +29,8 @@ import type { Common } from '@ethereumjs/common'
 import type { TransactionType, TxData, TxOptions } from '@ethereumjs/tx'
 import type { ChildProcessWithoutNullStreams } from 'child_process'
 import type { Client } from 'jayson/promise'
+
+const kzg = await loadKZG()
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 // This function switches between the native web implementation and a nodejs implementation
@@ -48,9 +49,6 @@ export async function getEventSource(): Promise<typeof EventSource> {
 export function stringifyQuery(query: unknown): string {
   return qs.stringify(query, { arrayFormat: 'repeat' })
 }
-
-// Initialize the kzg object with the kzg library
-initKZG(kzg, __dirname + '/../../src/trustedSetups/official.txt')
 
 export async function waitForELOnline(client: Client): Promise<string> {
   for (let i = 0; i < 15; i++) {
@@ -320,8 +318,8 @@ export const runBlobTx = async (
   opts?: TxOptions
 ) => {
   const blobs = getBlobs(bytesToHex(randomBytes(blobSize)))
-  const commitments = blobsToCommitments(blobs)
-  const proofs = blobsToProofs(blobs, commitments)
+  const commitments = blobsToCommitments(kzg, blobs)
+  const proofs = blobsToProofs(kzg, blobs, commitments)
   const hashes = commitmentsToVersionedHashes(commitments)
 
   const sender = Address.fromPrivateKey(pkey)
@@ -390,8 +388,8 @@ export const createBlobTxs = async (
   const blobSize = txMeta.blobSize ?? 2 ** 17 - 1
 
   const blobs = getBlobs(bytesToHex(randomBytes(blobSize)))
-  const commitments = blobsToCommitments(blobs)
-  const proofs = blobsToProofs(blobs, commitments)
+  const commitments = blobsToCommitments(kzg, blobs)
+  const proofs = blobsToProofs(kzg, blobs, commitments)
   const hashes = commitmentsToVersionedHashes(commitments)
   const txns = []
 

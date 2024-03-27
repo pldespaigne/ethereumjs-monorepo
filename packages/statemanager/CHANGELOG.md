@@ -6,6 +6,91 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 (modification: no type change headlines) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.3.0 - 2024-03-05
+
+### Full 4844 Browser Readiness
+
+#### WASM KZG
+
+Shortly following the "Dencun Hardfork Support" release round from last month, this is now the first round of releases where the EthereumJS libraries are now fully browser compatible regarding the new 4844 functionality, see PRs [#3294](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3294) and [#3296](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3296)! 🎉
+
+Our WASM wizard @acolytec3 has spent the last two weeks and created a WASM build of the [c-kzg](https://github.com/benjaminion/c-kzg) library which we have released under the `kzg-wasm` name on npm (and you can also use independently for other projects). See the newly created [GitHub repository](https://github.com/ethereumjs/kzg-wasm) for some library-specific documentation.
+
+This WASM KZG library can now be used for KZG initialization (replacing the old recommended `c-kzg` initialization), see the respective [README section](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/README.md#kzg-initialization) from the tx library for usage instructions (which is also accurate for the other using upstream libraries like block or EVM).
+
+Note that `kzg-wasm` needs to be added manually to your own dependencies and the KZG initialization code needs to be adopted like the following (which you will likely want to do in most cases, so if you deal with post Dencun EVM bytecode and/or 4844 blob txs in any way):
+
+```typescript
+import { loadKZG } from 'kzg-wasm'
+import { Chain, Common, Hardfork } from '@ethereumjs/common'
+
+const kzg = await loadKZG()
+
+// Instantiate `common`
+const common = new Common({
+  chain: Chain.Mainnet,
+  hardfork: Hardfork.Cancun,
+  customCrypto: { kzg },
+})
+```
+
+Manual addition is necessary because we did not want to bundle our libraries with WASM code by default, since some projects are then prevented from using our libraries.
+
+Note that passing in the KZG setup file is not necessary anymore, since this is now defaulting to the setup file from the official [KZG ceremony](https://ceremony.ethereum.org/) (which is now bundled with the KZG library).
+
+#### Trie Node.js Import Bug
+
+Since this fits well also to be placed here relatively prominently for awareness: we had a relatively nasty bug in the `@ethereumjs/trie` library with a `Node.js` web stream import also affecting browser compatibility, see PR [#3280](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3280). This bug has been fixed along with these releases and this library now references the updated trie library version.
+
+### Other Changes
+
+- Properly apply statemanager `opts` in `fromProof()`, PR [#3276](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3276)
+- New optional `getAppliedKey()` method for the interface (see interface definition in `@ethereumjs/common`), PR [#3143](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3143)
+- Fix inconsistency between the normal and the RPC statemanager regarding empty account return values, PR [#3323](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3323)
+- Fix a type error related to the `lru-cache` dependency, PR [#3285](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3285)
+- Add tests for verkle statemanager, PR [#3257](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3257)
+
+## 2.2.2 - 2024-02-08
+
+- Hotfix release moving the `@ethereumjs/verkle` dependency from a peer dependency to the main dependencis (note that this decision might be temporary)
+
+## 2.2.1 - 2024-02-08
+
+- Hotfix release adding a missing `debug` dependency to the `@ethereumjs/trie` package (dependency), PR [#3271](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3271)
+
+## 2.2.0 - 2024-02-08
+
+### StateManager Proof Instantiation
+
+Coming with the work from PR [#3186](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3186) it is now possible to instantiate a new state manager from an [EIP-1186](https://eips.ethereum.org/EIPS/eip-1186) conformant proof with the new `DefaultStateManager.fromProof()` static constructor.
+
+Together with the existing `createProof()` functionality it is now extremely handy to create proofs on a very high (in the sense of: abstract) API level for account and storage data without having to deal with the underlying trie proof functionality.
+
+See trie [README](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/statemanager#instantiating-from-a-proof) for a comprehensive example on this.
+
+### EthersStateManager -> RPCStateManager
+
+This release replaces the specific `EthersStateManager`, which can be used to RPC-retrieve state data for (still somewhat experimental) on-chain block execution, with a more generic `RPCStateManager` (which still can be used well in conjunction with Ethers, dependency has been removed though), see PR [#3167](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3167).
+
+This new `RPCStateManager` can now be used with any type of JSON-RPC provider that supports the `eth` namespace (e.g. an Infura endpoint). See [README](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/statemanager#rpcstatemanager) for an example on how to use the extended provider capabilities.
+
+Note: we have decided to plainly rename, since it seemed unlikely to us that this part of the code base is already hard-wired into production code. If this causes problems for you let us know (Discord).
+
+### WASM Crypto Support
+
+With this release round there is a new way to replace the native JS crypto primitives used within the EthereumJS ecosystem by custom/other implementations in a controlled fashion, see PR [#3192](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3192).
+
+This can e.g. be used to replace time-consuming primitives like the commonly used `keccak256` hash function with a more performant WASM based implementation, see `@ethereumjs/common` [README](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/common) for some detailed guidance on how to use.
+
+### Self-Contained (and Working 🙂) README Examples
+
+All code examples in `EthereumJS` monorepo library README files are now self-contained and can be executed "out of the box" by simply copying them over and running "as is", see tracking issue [#3234](https://github.com/ethereumjs/ethereumjs-monorepo/issues/3234) for an overview. Additionally all examples can now be found in the respective library [examples](./examples/) folder (in fact the README examples are now auto-embedded from over there). As a nice side effect all examples are now run in CI on new PRs and so do not risk to get outdated or broken over time.
+
+### Other Changes
+
+- Export `originalStorageCache` to ease implementation of own state managers, PR [#3161](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3161)
+- This release integrates a new `StatelessVerkleStateManager`. This code is still very experimental and so do not tell anyone 😋, but if you dug so deep and found this note here you are likely eligible for early testing and experimentation, PRs [#3139](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3139) and [#3179](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3179)
+
 ## 2.1.0 - 2023-10-23
 
 ### New Diff-Based Code Cache

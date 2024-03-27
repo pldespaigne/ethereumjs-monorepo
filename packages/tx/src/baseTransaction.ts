@@ -206,6 +206,13 @@ export abstract class BaseTransaction<T extends TransactionType>
   }
 
   /**
+   * Returns the effective priority fee. This is the priority fee which the coinbase will receive
+   * once it is included in the block
+   * @param baseFee Optional baseFee of the block. Note for EIP1559 and EIP4844 this is required.
+   */
+  abstract getEffectivePriorityFee(baseFee: bigint | undefined): bigint
+
+  /**
    * The up front amount that an account must have for this transaction to be valid
    */
   abstract getUpfrontCost(): bigint
@@ -370,7 +377,9 @@ export abstract class BaseTransaction<T extends TransactionType>
       const chainIdBigInt = bytesToBigInt(toBytes(chainId))
       if (common) {
         if (common.chainId() !== chainIdBigInt) {
-          const msg = this._errorMsg('The chain ID does not match the chain ID of Common')
+          const msg = this._errorMsg(
+            `The chain ID does not match the chain ID of Common. Got: ${chainIdBigInt}, expected: ${common.chainId}`
+          )
           throw new Error(msg)
         }
         // Common provided, chain ID does match

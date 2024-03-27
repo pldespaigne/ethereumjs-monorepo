@@ -13,7 +13,7 @@ describe('Precompiles: RIPEMD160', () => {
     // Test reference: https://github.com/ethereum/go-ethereum/blob/e206d3f8975bd98cc86d14055dca40f996bacc60/core/vm/contracts_test.go#L217
 
     const common = new Common({ chain: Chain.Mainnet, hardfork: Hardfork.Petersburg })
-    const evm = new EVM({
+    const evm = await EVM.create({
       common,
     })
     const addressStr = '0000000000000000000000000000000000000003'
@@ -38,6 +38,6 @@ describe('Precompiles: RIPEMD160', () => {
       common,
       _EVM: evm,
     })
-    assert.equal(result.exceptionError?.error, 'out of gas', 'should error when not enough gas')
+    assert.equal(result.exceptionError!.error, 'out of gas', 'should error when not enough gas')
   })
 })

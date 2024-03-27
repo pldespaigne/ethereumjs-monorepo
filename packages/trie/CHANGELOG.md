@@ -6,6 +6,52 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 (modification: no type change headlines) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 6.2.0 - 2024-03-05
+
+In the hope that you do not have yet integrated: we needed to remove the new more modern async trie iteration with web streams functionality (new `createAsyncReadStream()` method) introduced with the `v6.1.0` release - see PR [#3231](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3231) for context - since the related Node.js web streams API import caused relatively severe problems for all upstream libraries when being used in the browser.
+
+So functionality has been removed in PR [#3280](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3280). We hope we find a good way to re-introduce along with the next breaking release round without limiting browser functionality.
+
+### Other Changes
+
+- Add optional `partialPath` parameter to `trie.findPath()`, PR [#3305](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3305)
+- Add export for `Path` interface for better TypeScript integration when using the `findPath()` method, PR [#3292](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3292)
+- Improved zero-element proof behavior in `verifyProof()` method, PR [#3047](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3047)
+- Fix a type error related to the `lru-cache` dependency, PR [#3285](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3285)
+
+## 6.1.1 - 2024-02-08
+
+- Hotfix release adding a missing `debug` dependency, PR [#3271](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3271)
+
+## 6.1.0 - 2024-02-08
+
+### Extended EIP-1186 Proof Functionality
+
+This release complements on [EIP-1186](https://eips.ethereum.org/EIPS/eip-1186) proof functionality, see PR [#2949](https://github.com/ethereumjs/ethereumjs-monorepo/pull/2949) and [#3267](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3267).
+
+A new static `Trie.createFromProof()` constructor now allows for an easier instantiation of a trie given an EIP-1186 conformant proof, which can be created from an existing trie using the `trie.createProof()` method.
+
+There are also new static methods for the verification of proofs, namely `Trie.verifyProof()` to verify a proof for a single key as well as `Trie.verifyRangeProof()` for a range of keys.
+
+Additionally all proof related functionality is now better documented and there are README examples allowing for an easier entry to the topic.
+
+Also note that along with this release round there is additional higher level proof functionality available shipped within the `@ethereumjs/statemanager` package.
+
+### WASM Crypto Support
+
+With this release round there is a new way to replace the native JS crypto primitives used within the EthereumJS ecosystem by custom/other implementations in a controlled fashion, see PR [#3192](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3192).
+
+This can e.g. be used to replace time-consuming primitives like the commonly used `keccak256` hash function with a more performant WASM based implementation, see `@ethereumjs/common` [README](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/common) for some detailed guidance on how to use.
+
+### Self-Contained (and Working 🙂) README Examples
+
+All code examples in the `EthereumJS` monorepo library README files are now self-contained and can be executed "out of the box" by simply copying them over and running "as is", see tracking issue [#3234](https://github.com/ethereumjs/ethereumjs-monorepo/issues/3234) for an overview. Additionally all examples can now be found in their respective library [examples](./examples/) folder (in fact the README examples are now auto-embedded from over there). As a nice side effect, all examples are now run in CI on new PRs and so do not risk getting outdated or broken over time.
+
+### Other Changes
+
+- More modern async trie iteration with web streams (see new `createAsyncReadStream()` method), PR [#3231](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3231)
+- Dependency Updates, PR [#3212](https://github.com/ethereumjs/ethereumjs-monorepo/pull/3212)
+
 ## 6.0.1 - 2023-10-26
 
 ### Native Support for Uint8Array Values in DBs

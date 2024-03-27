@@ -10,12 +10,10 @@ import {
   bytesToBigInt,
   bytesToHex,
   hexToBytes,
-  initKZG,
   isHexPrefixed,
   stripHexPrefix,
   toBytes,
 } from '@ethereumjs/util'
-import * as kzg from 'c-kzg'
 
 import { VM } from '../../../dist/cjs'
 import { setupPreConditions, verifyPostConditions } from '../../util'
@@ -23,8 +21,6 @@ import { setupPreConditions, verifyPostConditions } from '../../util'
 import type { EthashConsensus } from '@ethereumjs/blockchain'
 import type { Common } from '@ethereumjs/common'
 import type * as tape from 'tape'
-
-initKZG(kzg, __dirname + '/../../../../client/src/trustedSetups/devnet6.txt')
 
 function formatBlockHeader(data: any) {
   const formatted: any = {}
@@ -225,8 +221,6 @@ export async function runBlockchainTest(options: any, testData: any, t: tape.Tes
         throw e
       }
 
-      //  await cacheDB._leveldb.close()
-
       if (expectException !== false) {
         t.fail(`expected exception but test did not throw an exception: ${expectException}`)
         return
@@ -246,7 +240,6 @@ export async function runBlockchainTest(options: any, testData: any, t: tape.Tes
   const end = Date.now()
   const timeSpent = `${(end - begin) / 1000} secs`
   t.comment(`Time: ${timeSpent}`)
-  // await cacheDB._leveldb.close()
 
   // @ts-ignore Explicitly delete objects for memory optimization (early GC)
   common = blockchain = state = stateManager = vm = cacheDB = null // eslint-disable-line

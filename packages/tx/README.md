@@ -23,38 +23,43 @@ npm install @ethereumjs/tx
 
 ### KZG Setup
 
-This library supports an experimental version of `EIP-4844` blob transactions (see usage instructions below) starting with `v4.1.0`.
+This library now fully supports `EIP-4844` blob transactions (see usage instructions below) starting with `v5.2.0`.
 
-For blob transactions and other KZG related proof functionality (e.g. for EVM precompiles) KZG has to be manually installed and initialized once in a global scope. The functionality is then available for all KZG usages throughout different libraries (Transaction, Block, EVM).
+For blob transactions and other KZG related proof functionality (e.g. for EVM precompiles) KZG has to be manually installed and initialized in the `common` instance to be used in instantiating blob transactions.
 
-#### Manual Installation
+Note: starting with the `v5.3` release of this library and associated releases of upstream EthereumJS libraries the old `c-kzg` centered recommended setup has been replaced by using our own WASM build of the `c-kzg` library which has been released as a separate package [kzg-wasm](https://github.com/ethereumjs/kzg-wasm) on npm.
 
-The following two manual installation steps for a KZG library and the trusted setup are needed.
+This new setup is now both browser compatible 🎉 and the official KZG setup file has been integrated by default and the new setup is now the default recommended setup to be used.
 
-1. Install an additional dependency that supports the `kzg` interface defined in [the kzg interface](./src/kzg/kzg.ts). You can install the default option [c-kzg](https://github.com/ethereum/c-kzg-4844) by simply running `npm install c-kzg`.
-2. Download the trusted setup required for the KZG module. It can be found [here](../client/src/trustedSetups/trusted_setup.txt) within the client package.
+#### KZG Initialization
 
-#### Global Initialization
+As a first step add the `kzg-wasm` package as a dependency to your `package.json` file and install the library.
 
-Global initialization can then be done like this (using the `c-kzg` module for our KZG dependency):
+Initialization can then be done like the following:
 
 ```ts
 // ./examples/initKzg.ts
 
-import { initKZG } from '@ethereumjs/util'
+import { loadKZG } from 'kzg-wasm'
+import { Chain, Common, Hardfork } from '@ethereumjs/common'
 
-// Make the kzg library available globally
-import * as kzg from 'c-kzg'
+const main = async () => {
+  const kzg = await loadKZG()
 
-// Initialize the trusted setup
-try {
-  initKZG(kzg, __dirname + '/../../client/src/trustedSetups/devnet6.txt')
-} catch {
-  // No-op if KZG is already loaded
+  // Instantiate `common`
+  const common = new Common({
+    chain: Chain.Mainnet,
+    hardfork: Hardfork.Cancun,
+    customCrypto: { kzg },
+  })
+
+  console.log(common.customCrypto.kzg) // should output the KZG API as an object
 }
 
-console.log(kzg) // should output the KZG API as an object
+main()
 ```
+
+Note: Manual addition is necessary because we did not want to bundle our libraries with WASM code by default, since some projects are then prevented from using our libraries.
 
 ## Usage
 
@@ -87,6 +92,10 @@ Hardforks adding features and/or tx types:
 | `london`         | `v3.2.0`   | `EIP-1559` Transactions                                                                                 |
 | `cancun`         | `v5.0.0`   | `EIP-4844` Transactions                                                                                 |
 
+### WASM Crypto Support
+
+This library by default uses JavaScript implementations for the basic standard crypto primitives like hashing or signature verification. See `@ethereumjs/common` [README](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/common) for instructions on how to replace with e.g. a more performant WASM implementation by using a shared `common` instance.
+
 ### Transaction Types
 
 This library supports the following transaction types ([EIP-2718](https://eips.ethereum.org/EIPS/eip-2718)):
@@ -103,9 +112,7 @@ This library supports the following transaction types ([EIP-2718](https://eips.e
 - Activation: `cancun`
 - Type: `3`
 
-This library supports the blob transaction type introduced with [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844) as being specified in the [b9a5a11](https://github.com/ethereum/EIPs/commit/b9a5a117ab7e1dc18f937841d00598b527c306e7) EIP version from July 2023 deployed along [4844-devnet-7](https://github.com/ethpandaops/4844-testnet) (July 2023), see PR [#2349](https://github.com/ethereumjs/ethereumjs-monorepo/pull/2349) and following.
-
-**Note:** 4844 support is not yet completely stable and there will still be (4844-)breaking changes along all types of library releases.
+This library supports the blob transaction type introduced with [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844).
 
 **Note:** This functionality needs a manual KZG library installation and global initialization, see [KZG Setup](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/tx/README.md#kzg-setup) for instructions.
 
@@ -118,38 +125,43 @@ See the following code snipped for an example on how to instantiate (using the `
 
 import { Chain, Common, Hardfork } from '@ethereumjs/common'
 import { BlobEIP4844Transaction } from '@ethereumjs/tx'
-import { bytesToHex, initKZG } from '@ethereumjs/util'
-import * as kzg from 'c-kzg'
+import { bytesToHex } from '@ethereumjs/util'
+import { loadKZG } from 'kzg-wasm'
 
-try {
-  initKZG(kzg, __dirname + '/../../client/src/trustedSetups/devnet6.txt')
-} catch {
-  // No-op if KZG is already loaded
+const main = async () => {
+  const kzg = await loadKZG()
+
+  const common = new Common({
+    chain: Chain.Mainnet,
+    hardfork: Hardfork.Shanghai,
+    eips: [4844],
+    customCrypto: { kzg },
+  })
+
+  const txData = {
+    data: '0x1a8451e600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+    gasLimit: '0x02625a00',
+    maxPriorityFeePerGas: '0x01',
+    maxFeePerGas: '0xff',
+    maxFeePerDataGas: '0xfff',
+    nonce: '0x00',
+    to: '0xcccccccccccccccccccccccccccccccccccccccc',
+    value: '0x0186a0',
+    v: '0x01',
+    r: '0xafb6e247b1c490e284053c87ab5f6b59e219d51f743f7a4d83e400782bc7e4b9',
+    s: '0x479a268e0e0acd4de3f1e28e4fac2a6b32a4195e8dfa9d19147abe8807aa6f64',
+    chainId: '0x01',
+    accessList: [],
+    type: '0x05',
+    blobsData: ['abcd'],
+  }
+
+  const tx = BlobEIP4844Transaction.fromTxData(txData, { common })
+
+  console.log(bytesToHex(tx.hash())) //0x3c3e7c5e09c250d2200bcc3530f4a9088d7e3fb4ea3f4fccfd09f535a3539e84
 }
 
-const common = new Common({ chain: Chain.Mainnet, hardfork: Hardfork.Shanghai, eips: [4844] })
-
-const txData = {
-  data: '0x1a8451e600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  gasLimit: '0x02625a00',
-  maxPriorityFeePerGas: '0x01',
-  maxFeePerGas: '0xff',
-  maxFeePerDataGas: '0xfff',
-  nonce: '0x00',
-  to: '0xcccccccccccccccccccccccccccccccccccccccc',
-  value: '0x0186a0',
-  v: '0x01',
-  r: '0xafb6e247b1c490e284053c87ab5f6b59e219d51f743f7a4d83e400782bc7e4b9',
-  s: '0x479a268e0e0acd4de3f1e28e4fac2a6b32a4195e8dfa9d19147abe8807aa6f64',
-  chainId: '0x01',
-  accessList: [],
-  type: '0x05',
-  blobsData: ['abcd'],
-}
-
-const tx = BlobEIP4844Transaction.fromTxData(txData, { common })
-
-console.log(bytesToHex(tx.hash())) //0x3c3e7c5e09c250d2200bcc3530f4a9088d7e3fb4ea3f4fccfd09f535a3539e84
+main()
 ```
 
 Note that `versionedHashes` and `kzgCommitments` have a real length of 32 bytes, `blobs` have a real length of `4096` bytes and values are trimmed here for brevity.
@@ -397,23 +409,21 @@ const bip32Path = "44'/60'/0'/0/0"
 const run = async () => {
   // Signing a legacy tx
   tx = LegacyTransaction.fromTxData(txData, { common })
-  unsignedTx = tx.getMessageToSign()
-  unsignedTx = RLP.encode(unsignedTx) // ledger signTransaction API expects it to be serialized
-  let { v, r, s } = await eth.signTransaction(bip32Path, unsignedTx)
-  txData = { ...txData, v, r, s }
-  signedTx = LegacyTransaction.fromTxData(txData, { common })
-  let from = signedTx.getSenderAddress().toString()
-  console.log(`signedTx: ${bytesToHex(signedTx.serialize())}\nfrom: ${from}`)
+  tx = tx.getMessageToSign()
+  // ledger signTransaction API expects it to be serialized
+  let { v, r, s } = await eth.signTransaction(bip32Path, RLP.encode(tx))
+  tx.addSignature(v, r, s, true)
+  let from = tx.getSenderAddress().toString()
+  console.log(`signedTx: ${bytesToHex(tx.serialize())}\nfrom: ${from}`)
 
   // Signing a 1559 tx
   txData = { value: 1 }
   tx = FeeMarketEIP1559Transaction.fromTxData(txData, { common })
-  unsignedTx = tx.getMessageToSign()
+  tx = tx.getMessageToSign()
   ;({ v, r, s } = await eth.signTransaction(bip32Path, unsignedTx)) // this syntax is: object destructuring - assignment without declaration
-  txData = { ...txData, v, r, s }
-  signedTx = FeeMarketEIP1559Transaction.fromTxData(txData, { common })
-  from = signedTx.getSenderAddress().toString()
-  console.log(`signedTx: ${bytesToHex(signedTx.serialize())}\nfrom: ${from}`)
+  tx.addSignature(v, r, s)
+  from = tx.getSenderAddress().toString()
+  console.log(`signedTx: ${bytesToHex(tx.serialize())}\nfrom: ${from}`)
 }
 
 run()

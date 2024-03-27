@@ -1,6 +1,6 @@
-[@ethereumjs/statemanager](../README.md) / EthersStateManager
+[@ethereumjs/statemanager](../README.md) / RPCStateManager
 
-# Class: EthersStateManager
+# Class: RPCStateManager
 
 ## Implements
 
@@ -10,60 +10,72 @@
 
 ### Constructors
 
-- [constructor](EthersStateManager.md#constructor)
+- [constructor](RPCStateManager.md#constructor)
 
 ### Properties
 
-- [originalStorageCache](EthersStateManager.md#originalstoragecache)
+- [common](RPCStateManager.md#common)
+- [originalStorageCache](RPCStateManager.md#originalstoragecache)
 
 ### Methods
 
-- [accountExists](EthersStateManager.md#accountexists)
-- [checkpoint](EthersStateManager.md#checkpoint)
-- [clearCaches](EthersStateManager.md#clearcaches)
-- [clearContractStorage](EthersStateManager.md#clearcontractstorage)
-- [commit](EthersStateManager.md#commit)
-- [deleteAccount](EthersStateManager.md#deleteaccount)
-- [dumpStorage](EthersStateManager.md#dumpstorage)
-- [dumpStorageRange](EthersStateManager.md#dumpstoragerange)
-- [flush](EthersStateManager.md#flush)
-- [generateCanonicalGenesis](EthersStateManager.md#generatecanonicalgenesis)
-- [getAccount](EthersStateManager.md#getaccount)
-- [getContractCode](EthersStateManager.md#getcontractcode)
-- [getContractStorage](EthersStateManager.md#getcontractstorage)
-- [getProof](EthersStateManager.md#getproof)
-- [getStateRoot](EthersStateManager.md#getstateroot)
-- [hasStateRoot](EthersStateManager.md#hasstateroot)
-- [modifyAccountFields](EthersStateManager.md#modifyaccountfields)
-- [putAccount](EthersStateManager.md#putaccount)
-- [putContractCode](EthersStateManager.md#putcontractcode)
-- [putContractStorage](EthersStateManager.md#putcontractstorage)
-- [revert](EthersStateManager.md#revert)
-- [setBlockTag](EthersStateManager.md#setblocktag)
-- [setStateRoot](EthersStateManager.md#setstateroot)
-- [shallowCopy](EthersStateManager.md#shallowcopy)
+- [accountExists](RPCStateManager.md#accountexists)
+- [checkpoint](RPCStateManager.md#checkpoint)
+- [clearCaches](RPCStateManager.md#clearcaches)
+- [clearContractStorage](RPCStateManager.md#clearcontractstorage)
+- [commit](RPCStateManager.md#commit)
+- [deleteAccount](RPCStateManager.md#deleteaccount)
+- [dumpStorage](RPCStateManager.md#dumpstorage)
+- [dumpStorageRange](RPCStateManager.md#dumpstoragerange)
+- [flush](RPCStateManager.md#flush)
+- [generateCanonicalGenesis](RPCStateManager.md#generatecanonicalgenesis)
+- [getAccount](RPCStateManager.md#getaccount)
+- [getAppliedKey](RPCStateManager.md#getappliedkey)
+- [getContractCode](RPCStateManager.md#getcontractcode)
+- [getContractStorage](RPCStateManager.md#getcontractstorage)
+- [getProof](RPCStateManager.md#getproof)
+- [getStateRoot](RPCStateManager.md#getstateroot)
+- [hasStateRoot](RPCStateManager.md#hasstateroot)
+- [modifyAccountFields](RPCStateManager.md#modifyaccountfields)
+- [putAccount](RPCStateManager.md#putaccount)
+- [putContractCode](RPCStateManager.md#putcontractcode)
+- [putContractStorage](RPCStateManager.md#putcontractstorage)
+- [revert](RPCStateManager.md#revert)
+- [setBlockTag](RPCStateManager.md#setblocktag)
+- [setStateRoot](RPCStateManager.md#setstateroot)
+- [shallowCopy](RPCStateManager.md#shallowcopy)
 
 ## Constructors
 
 ### constructor
 
-• **new EthersStateManager**(`opts`)
+• **new RPCStateManager**(`opts`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `opts` | [`EthersStateManagerOpts`](../interfaces/EthersStateManagerOpts.md) |
+| `opts` | [`RPCStateManagerOpts`](../interfaces/RPCStateManagerOpts.md) |
 
 #### Defined in
 
-[ethersStateManager.ts:31](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L31)
+[rpcStateManager.ts:50](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L50)
 
 ## Properties
 
+### common
+
+• `Readonly` **common**: `Common`
+
+#### Defined in
+
+[rpcStateManager.ts:48](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L48)
+
+___
+
 ### originalStorageCache
 
-• **originalStorageCache**: `OriginalStorageCache`
+• **originalStorageCache**: [`OriginalStorageCache`](OriginalStorageCache.md)
 
 #### Implementation of
 
@@ -71,7 +83,7 @@ EVMStateManagerInterface.originalStorageCache
 
 #### Defined in
 
-[ethersStateManager.ts:28](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L28)
+[rpcStateManager.ts:44](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L44)
 
 ## Methods
 
@@ -93,7 +105,7 @@ Checks if an `account` exists at `address`
 
 #### Defined in
 
-[ethersStateManager.ts:204](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L204)
+[rpcStateManager.ts:225](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L225)
 
 ___
 
@@ -117,7 +129,7 @@ EVMStateManagerInterface.checkpoint
 
 #### Defined in
 
-[ethersStateManager.ts:354](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L354)
+[rpcStateManager.ts:387](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L387)
 
 ___
 
@@ -134,7 +146,7 @@ initially be retrieved from the provider
 
 #### Defined in
 
-[ethersStateManager.ts:92](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L92)
+[rpcStateManager.ts:111](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L111)
 
 ___
 
@@ -160,7 +172,7 @@ EVMStateManagerInterface.clearContractStorage
 
 #### Defined in
 
-[ethersStateManager.ts:173](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L173)
+[rpcStateManager.ts:194](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L194)
 
 ___
 
@@ -183,7 +195,7 @@ EVMStateManagerInterface.commit
 
 #### Defined in
 
-[ethersStateManager.ts:365](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L365)
+[rpcStateManager.ts:398](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L398)
 
 ___
 
@@ -209,7 +221,7 @@ EVMStateManagerInterface.deleteAccount
 
 #### Defined in
 
-[ethersStateManager.ts:323](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L323)
+[rpcStateManager.ts:343](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L343)
 
 ___
 
@@ -239,7 +251,7 @@ EVMStateManagerInterface.dumpStorage
 
 #### Defined in
 
-[ethersStateManager.ts:184](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L184)
+[rpcStateManager.ts:205](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L205)
 
 ___
 
@@ -265,7 +277,7 @@ EVMStateManagerInterface.dumpStorageRange
 
 #### Defined in
 
-[ethersStateManager.ts:195](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L195)
+[rpcStateManager.ts:216](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L216)
 
 ___
 
@@ -279,7 +291,7 @@ ___
 
 #### Defined in
 
-[ethersStateManager.ts:382](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L382)
+[rpcStateManager.ts:415](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L415)
 
 ___
 
@@ -303,7 +315,7 @@ EVMStateManagerInterface.generateCanonicalGenesis
 
 #### Defined in
 
-[ethersStateManager.ts:405](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L405)
+[rpcStateManager.ts:438](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L438)
 
 ___
 
@@ -332,7 +344,36 @@ EVMStateManagerInterface.getAccount
 
 #### Defined in
 
-[ethersStateManager.ts:230](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L230)
+[rpcStateManager.ts:251](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L251)
+
+___
+
+### getAppliedKey
+
+▸ **getAppliedKey**(`address`): `Uint8Array`
+
+Returns the applied key for a given address
+Used for saving preimages
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `address` | `Uint8Array` | The address to return the applied key |
+
+#### Returns
+
+`Uint8Array`
+
+- The applied key (e.g. hashed address)
+
+#### Implementation of
+
+EVMStateManagerInterface.getAppliedKey
+
+#### Defined in
+
+[rpcStateManager.ts:376](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L376)
 
 ___
 
@@ -361,7 +402,7 @@ EVMStateManagerInterface.getContractCode
 
 #### Defined in
 
-[ethersStateManager.ts:104](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L104)
+[rpcStateManager.ts:123](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L123)
 
 ___
 
@@ -393,7 +434,7 @@ EVMStateManagerInterface.getContractStorage
 
 #### Defined in
 
-[ethersStateManager.ts:133](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L133)
+[rpcStateManager.ts:155](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L155)
 
 ___
 
@@ -422,7 +463,7 @@ EVMStateManagerInterface.getProof
 
 #### Defined in
 
-[ethersStateManager.ts:336](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L336)
+[rpcStateManager.ts:356](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L356)
 
 ___
 
@@ -432,7 +473,7 @@ ___
 
 **`Deprecated`**
 
-This method is not used by the Ethers State Manager and is a stub required by the State Manager interface
+This method is not used by the RPC State Manager and is a stub required by the State Manager interface
 
 #### Returns
 
@@ -444,7 +485,7 @@ EVMStateManagerInterface.getStateRoot
 
 #### Defined in
 
-[ethersStateManager.ts:389](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L389)
+[rpcStateManager.ts:422](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L422)
 
 ___
 
@@ -454,7 +495,7 @@ ___
 
 **`Deprecated`**
 
-This method is not used by the Ethers State Manager and is a stub required by the State Manager interface
+This method is not used by the RPC State Manager and is a stub required by the State Manager interface
 
 #### Returns
 
@@ -466,7 +507,7 @@ EVMStateManagerInterface.hasStateRoot
 
 #### Defined in
 
-[ethersStateManager.ts:401](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L401)
+[rpcStateManager.ts:434](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L434)
 
 ___
 
@@ -495,7 +536,7 @@ EVMStateManagerInterface.modifyAccountFields
 
 #### Defined in
 
-[ethersStateManager.ts:294](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L294)
+[rpcStateManager.ts:314](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L314)
 
 ___
 
@@ -522,7 +563,7 @@ EVMStateManagerInterface.putAccount
 
 #### Defined in
 
-[ethersStateManager.ts:270](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L270)
+[rpcStateManager.ts:290](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L290)
 
 ___
 
@@ -550,7 +591,7 @@ EVMStateManagerInterface.putContractCode
 
 #### Defined in
 
-[ethersStateManager.ts:119](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L119)
+[rpcStateManager.ts:141](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L141)
 
 ___
 
@@ -579,7 +620,7 @@ EVMStateManagerInterface.putContractStorage
 
 #### Defined in
 
-[ethersStateManager.ts:165](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L165)
+[rpcStateManager.ts:186](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L186)
 
 ___
 
@@ -602,7 +643,7 @@ EVMStateManagerInterface.revert
 
 #### Defined in
 
-[ethersStateManager.ts:376](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L376)
+[rpcStateManager.ts:409](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L409)
 
 ___
 
@@ -625,7 +666,7 @@ internal cache.
 
 #### Defined in
 
-[ethersStateManager.ts:82](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L82)
+[rpcStateManager.ts:101](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L101)
 
 ___
 
@@ -635,7 +676,7 @@ ___
 
 **`Deprecated`**
 
-This method is not used by the Ethers State Manager and is a stub required by the State Manager interface
+This method is not used by the RPC State Manager and is a stub required by the State Manager interface
 
 #### Parameters
 
@@ -653,21 +694,21 @@ EVMStateManagerInterface.setStateRoot
 
 #### Defined in
 
-[ethersStateManager.ts:396](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L396)
+[rpcStateManager.ts:429](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L429)
 
 ___
 
 ### shallowCopy
 
-▸ **shallowCopy**(): [`EthersStateManager`](EthersStateManager.md)
+▸ **shallowCopy**(): [`RPCStateManager`](RPCStateManager.md)
 
 Note that the returned statemanager will share the same JsonRpcProvider as the original
 
 #### Returns
 
-[`EthersStateManager`](EthersStateManager.md)
+[`RPCStateManager`](RPCStateManager.md)
 
-EthersStateManager
+RPCStateManager
 
 #### Implementation of
 
@@ -675,4 +716,4 @@ EVMStateManagerInterface.shallowCopy
 
 #### Defined in
 
-[ethersStateManager.ts:60](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/ethersStateManager.ts#L60)
+[rpcStateManager.ts:79](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/statemanager/src/rpcStateManager.ts#L79)

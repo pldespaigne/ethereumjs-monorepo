@@ -48,9 +48,11 @@ Typed transaction with a new gas fee market mechanism for transactions that incl
 
 ### Methods
 
+- [addSignature](BlobEIP4844Transaction.md#addsignature)
 - [errorStr](BlobEIP4844Transaction.md#errorstr)
 - [getBaseFee](BlobEIP4844Transaction.md#getbasefee)
 - [getDataFee](BlobEIP4844Transaction.md#getdatafee)
+- [getEffectivePriorityFee](BlobEIP4844Transaction.md#geteffectivepriorityfee)
 - [getHashedMessageToSign](BlobEIP4844Transaction.md#gethashedmessagetosign)
 - [getMessageToSign](BlobEIP4844Transaction.md#getmessagetosign)
 - [getMessageToVerifySignature](BlobEIP4844Transaction.md#getmessagetoverifysignature)
@@ -101,7 +103,7 @@ BaseTransaction&lt;TransactionType.BlobEIP4844\&gt;.constructor
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:103](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L103)
+[tx/src/eip4844Transaction.ts:104](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L104)
 
 ## Properties
 
@@ -111,7 +113,7 @@ BaseTransaction&lt;TransactionType.BlobEIP4844\&gt;.constructor
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:85](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L85)
+[tx/src/eip4844Transaction.ts:86](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L86)
 
 ___
 
@@ -121,7 +123,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:84](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L84)
+[tx/src/eip4844Transaction.ts:85](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L85)
 
 ___
 
@@ -131,7 +133,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:91](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L91)
+[tx/src/eip4844Transaction.ts:92](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L92)
 
 ___
 
@@ -141,7 +143,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:92](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L92)
+[tx/src/eip4844Transaction.ts:93](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L93)
 
 ___
 
@@ -165,7 +167,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:83](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L83)
+[tx/src/eip4844Transaction.ts:84](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L84)
 
 ___
 
@@ -179,7 +181,7 @@ BaseTransaction.common
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:90](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L90)
+[tx/src/eip4844Transaction.ts:91](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L91)
 
 ___
 
@@ -217,7 +219,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:93](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L93)
+[tx/src/eip4844Transaction.ts:94](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L94)
 
 ___
 
@@ -227,7 +229,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:94](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L94)
+[tx/src/eip4844Transaction.ts:95](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L95)
 
 ___
 
@@ -237,7 +239,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:88](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L88)
+[tx/src/eip4844Transaction.ts:89](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L89)
 
 ___
 
@@ -247,7 +249,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:87](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L87)
+[tx/src/eip4844Transaction.ts:88](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L88)
 
 ___
 
@@ -257,7 +259,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:86](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L86)
+[tx/src/eip4844Transaction.ts:87](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L87)
 
 ___
 
@@ -367,6 +369,33 @@ BaseTransaction.type
 
 ## Methods
 
+### addSignature
+
+▸ **addSignature**(`v`, `r`, `s`, `convertV?`): [`BlobEIP4844Transaction`](BlobEIP4844Transaction.md)
+
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `v` | `bigint` | `undefined` |
+| `r` | `bigint` \| `Uint8Array` | `undefined` |
+| `s` | `bigint` \| `Uint8Array` | `undefined` |
+| `convertV` | `boolean` | `false` |
+
+#### Returns
+
+[`BlobEIP4844Transaction`](BlobEIP4844Transaction.md)
+
+#### Overrides
+
+BaseTransaction.addSignature
+
+#### Defined in
+
+[tx/src/eip4844Transaction.ts:558](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L558)
+
+___
+
 ### errorStr
 
 ▸ **errorStr**(): `string`
@@ -383,7 +412,7 @@ BaseTransaction.errorStr
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:552](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L552)
+[tx/src/eip4844Transaction.ts:594](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L594)
 
 ___
 
@@ -423,7 +452,33 @@ BaseTransaction.getDataFee
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:386](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L386)
+[tx/src/eip4844Transaction.ts:421](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L421)
+
+___
+
+### getEffectivePriorityFee
+
+▸ **getEffectivePriorityFee**(`baseFee`): `bigint`
+
+Returns the minimum of calculated priority fee (from maxFeePerGas and baseFee) and maxPriorityFeePerGas
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `baseFee` | `bigint` | Base fee retrieved from block |
+
+#### Returns
+
+`bigint`
+
+#### Overrides
+
+BaseTransaction.getEffectivePriorityFee
+
+#### Defined in
+
+[tx/src/eip4844Transaction.ts:224](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L224)
 
 ___
 
@@ -447,7 +502,7 @@ BaseTransaction.getHashedMessageToSign
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:483](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L483)
+[tx/src/eip4844Transaction.ts:518](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L518)
 
 ___
 
@@ -475,7 +530,7 @@ BaseTransaction.getMessageToSign
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:472](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L472)
+[tx/src/eip4844Transaction.ts:507](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L507)
 
 ___
 
@@ -493,7 +548,7 @@ BaseTransaction.getMessageToVerifySignature
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:497](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L497)
+[tx/src/eip4844Transaction.ts:532](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L532)
 
 ___
 
@@ -513,7 +568,7 @@ BaseTransaction.getSenderAddress
 
 #### Defined in
 
-[tx/src/baseTransaction.ts:272](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L272)
+[tx/src/baseTransaction.ts:279](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L279)
 
 ___
 
@@ -533,7 +588,7 @@ BaseTransaction.getSenderPublicKey
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:504](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L504)
+[tx/src/eip4844Transaction.ts:539](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L539)
 
 ___
 
@@ -559,7 +614,7 @@ BaseTransaction.getUpfrontCost
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:394](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L394)
+[tx/src/eip4844Transaction.ts:429](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L429)
 
 ___
 
@@ -604,7 +659,7 @@ BaseTransaction.hash
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:493](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L493)
+[tx/src/eip4844Transaction.ts:528](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L528)
 
 ___
 
@@ -622,7 +677,7 @@ BaseTransaction.isSigned
 
 #### Defined in
 
-[tx/src/baseTransaction.ts:247](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L247)
+[tx/src/baseTransaction.ts:254](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L254)
 
 ___
 
@@ -660,7 +715,7 @@ the number of blobs included with this transaction
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:571](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L571)
+[tx/src/eip4844Transaction.ts:613](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L613)
 
 ___
 
@@ -690,7 +745,7 @@ BaseTransaction.raw
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:411](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L411)
+[tx/src/eip4844Transaction.ts:446](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L446)
 
 ___
 
@@ -717,7 +772,7 @@ BaseTransaction.serialize
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:440](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L440)
+[tx/src/eip4844Transaction.ts:475](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L475)
 
 ___
 
@@ -733,7 +788,7 @@ the serialized form of a blob transaction in the network wrapper format (used fo
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:447](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L447)
+[tx/src/eip4844Transaction.ts:482](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L482)
 
 ___
 
@@ -765,7 +820,7 @@ BaseTransaction.sign
 
 #### Defined in
 
-[tx/src/baseTransaction.ts:290](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L290)
+[tx/src/baseTransaction.ts:297](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L297)
 
 ___
 
@@ -824,7 +879,7 @@ BaseTransaction.toCreationAddress
 
 #### Defined in
 
-[tx/src/baseTransaction.ts:216](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L216)
+[tx/src/baseTransaction.ts:223](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L223)
 
 ___
 
@@ -842,7 +897,7 @@ BaseTransaction.toJSON
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:508](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L508)
+[tx/src/eip4844Transaction.ts:543](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L543)
 
 ___
 
@@ -862,7 +917,7 @@ BaseTransaction.verifySignature
 
 #### Defined in
 
-[tx/src/baseTransaction.ts:259](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L259)
+[tx/src/baseTransaction.ts:266](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/baseTransaction.ts#L266)
 
 ___
 
@@ -887,7 +942,7 @@ a BlobEIP4844Transaction
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:328](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L328)
+[tx/src/eip4844Transaction.ts:358](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L358)
 
 ___
 
@@ -913,7 +968,7 @@ access_list, max_fee_per_data_gas, blob_versioned_hashes, y_parity, r, s])`
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:237](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L237)
+[tx/src/eip4844Transaction.ts:259](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L259)
 
 ___
 
@@ -934,7 +989,7 @@ ___
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:182](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L182)
+[tx/src/eip4844Transaction.ts:192](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L192)
 
 ___
 
@@ -960,7 +1015,7 @@ accessList, signatureYParity, signatureR, signatureS]`
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:263](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L263)
+[tx/src/eip4844Transaction.ts:289](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L289)
 
 ___
 
@@ -986,4 +1041,4 @@ the "minimal" representation of a BlobEIP4844Transaction (i.e. transaction objec
 
 #### Defined in
 
-[tx/src/eip4844Transaction.ts:217](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L217)
+[tx/src/eip4844Transaction.ts:235](https://github.com/ethereumjs/ethereumjs-monorepo/blob/master/packages/tx/src/eip4844Transaction.ts#L235)
